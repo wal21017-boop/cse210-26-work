@@ -1,0 +1,4 @@
+PlayerProfile~1020~Larry~
+Goal~Scriptures~read scriptures 15 min~5~True~
+Goal~Marathon~watch a movie marathon~1000~False~
+ListGoal~ListGoal~list 3 things~10~True~0~100~
