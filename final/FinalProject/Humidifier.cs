@@ -1,7 +1,8 @@
 public class Humidifier : Device
 {
-    private float _currentHumidity;
-    private float _storedWater;
+    private static Random random = new Random();
+    private float _currentHumidity = random.NextSingle() * 100;
+    private float _storedWater = 0;
 
     public override void Alert()
     {
@@ -20,12 +21,20 @@ public class Humidifier : Device
 
     public void DeHumidify()
     {
-        _currentHumidity -= 1;
+        if (_storedWater < 1)
+        {    
+            _currentHumidity -=1;
+            _storedWater +=1;
+        }
     }
 
     public void Humidify()
     {
-        _currentHumidity +=1;
+        if (_storedWater > 0)
+        {    
+            _currentHumidity +=1;
+            _storedWater -=1;
+        }
     }
 
     public Humidifier(float low, float high) : base(low, high)

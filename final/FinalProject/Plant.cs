@@ -1,7 +1,6 @@
 public class Plant
 {
     private int _age = 0;
-    private int _expectedLife = 0;
     private bool _canHarvest = false;
     private bool _flowering = false;
     private int _harvestStart = 0;

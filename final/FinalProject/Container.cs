@@ -6,9 +6,22 @@ public abstract class Container
     private float _shade = 0;
 
     public abstract double CalculateArea();
-    public void AddDevice()
+    public void AddDevice(string hold)
     {
-        Device device = new Device();
+        float low = float.Parse(Console.ReadLine());
+        float high = float.Parse(Console.ReadLine());
+        string flowType = Console.ReadLine();
+        Device device = hold switch
+        {
+            "ph" => new PhTester(low, high),
+            "humid" => new Humidifier(low, high),
+            "water" => new Hose(low, high, flowType),
+            "temp" => new Thermostat(low,high),
+            "nutrient" => new NutrientDispenser(low, high),
+            _ => throw new Exception("Device type was not recognized")
+
+
+        };
     }
     public abstract void AddPlant();
     public Container(string location, float shade)

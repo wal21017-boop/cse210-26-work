@@ -14,7 +14,7 @@ public class Plot : Container
         Plant plant = new Plant(name);
         _plants.Add(plant);
     }
-    Plot(string location, float shade, float length, float width) : base(location, shade)
+    public Plot(string location, float shade, float length, float width) : base(location, shade)
     {
         _length = length;
         _width = width;

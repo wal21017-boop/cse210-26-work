@@ -32,7 +32,7 @@ public class Thermostat : Device
         _currentTemp -= 1;
     }
 
-    Thermostat(float low, float high) : base(low, high)
+    public Thermostat(float low, float high) : base(low, high)
     {
         
     }
