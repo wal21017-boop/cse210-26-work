@@ -39,9 +39,9 @@ class Program
             Console.WriteLine("2: See how your garden is doing");
             Console.WriteLine("3: Check device levels");
             Console.WriteLine("4: Move to the next day");
-            Console.WriteLine("5: Quit");
+            Console.WriteLine("5: Save Progress");
             option = int.Parse(Console.ReadLine());
             
-        } while (option != 5);
+        } while (option != 6);
     }
 }

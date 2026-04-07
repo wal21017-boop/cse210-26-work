@@ -16,9 +16,9 @@ public class Pot : Container
         _radius = radius;
     }
 
-    public override void AddPlant()
+    public override void AddPlant(string name)
     {
-        string name = Console.ReadLine();
+        
         if (_occupied == true)
         {
             Console.WriteLine($"This pot already has a plant, please plant this{name} in a different container");
@@ -35,5 +35,23 @@ public class Pot : Container
         {
             Console.WriteLine($"{name} does not match any of our recorded plants, please enter a different plant name");
         }
+    }
+
+    public override void NextDay()
+    {
+        _plant.NextDay();
+        foreach (Device device in _devices)
+        {
+            device.NextDay();
+        }
+    }
+    public override void Display()
+    {
+        foreach(Device device in _devices)
+        {
+            device.Display();
+        }
+
+        _plant.Display();
     }
 }

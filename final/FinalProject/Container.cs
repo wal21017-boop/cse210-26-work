@@ -2,8 +2,10 @@ public abstract class Container
 {
     protected bool _occupied = false;
     private string _location = "";
-    private List<Device> _devices = new List<Device>();
+    protected List<Device> _devices = new List<Device>();
     private float _shade = 0;
+
+    private string _plantName;
 
     public abstract double CalculateArea();
     public void AddDevice(string hold)
@@ -23,10 +25,16 @@ public abstract class Container
 
         };
     }
-    public abstract void AddPlant();
+    public abstract void AddPlant(string name);
     public Container(string location, float shade)
     {
         _location = location;
         _shade = shade;
     }
+    
+
+
+    public abstract void NextDay();
+
+    public abstract void Display();
 }
