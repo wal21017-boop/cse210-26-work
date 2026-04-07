@@ -8,25 +8,33 @@ public class Hose : Device
 
     public override void Alert()
     {
-
+        Console.WriteLine("ERROR: soil moisture not within tolerance levels");
     }
 
     public override void CheckLevel()
     {
-
+        if (_currentMoistness>_highThreshold || _currentMoistness < _lowThreshold)
+        {
+            Alert();
+        }
+        else
+        {
+            Console.WriteLine($"Hose is ok");
+        }
     }
     public override void Display()
     {
-        Console.WriteLine($"The soil is currently saturated with {_currentMoistness} percent water");
+        Console.WriteLine($"Current soil moisture: {_currentMoistness}");
+        Console.WriteLine($"Flow type: {_flowType}");
     }
 
     public void ScheduleWater()
     {
         Console.WriteLine("What type of watering do you want the hose to do? (drip, stream, flood, or rain) ");
         _flowType = Console.ReadLine();
-        Console.WriteLine("How many hours of watering do you want each week? ");
+        Console.WriteLine("How many hours of watering do you want each day? ");
         int numHours = int.Parse(Console.ReadLine());
-        for(int i = 0; i < numHours; i++)
+        for(int i = 0; i == 24 ; i++)
         {
             if (_flowType == "drip")
             {
@@ -43,9 +51,13 @@ public class Hose : Device
                 _waterSchedule[i] = 3.5;
             }
 
-            else
+            else if (_flowType == "rain")
             {
                 _waterSchedule[i] = 1.5;
+            }
+            else
+            {
+                _waterSchedule[i] = 0;
             }
             
         }
@@ -53,11 +65,37 @@ public class Hose : Device
 
     public void Water(int hour)
     {
-        Console.WriteLine($"Plant given {_waterSchedule[hour]} units of water");
+        if (_waterSchedule[hour] == 0)
+        {
+            
+        }
+        else
+        {
+            Console.WriteLine($"Plant given {_waterSchedule[hour]} units of water at {hour}:00");
+        }
     }
 
     public Hose(float low, float high, string flowType) : base(low, high)
     {
         _flowType = flowType;
     }
+
+    public override void NextDay()
+    {
+        for(int i = 0; i ==24; i++)
+        {
+            Water(i);
+        }
+    }
+
+    public Hose(float low, float high, string flowType, int current) : base(low, high)
+    {
+        _flowType = flowType;
+        _currentMoistness = current;
+    }
+    public override string Save()
+    {
+        return $"Device~water~{_lowThreshold}~{_highThreshold}~{_flowType}~{_currentMoistness}~";
+    }
+
 }

@@ -3,6 +3,7 @@ public class Plant
     private int _age = 0;
     private bool _canHarvest = false;
     private bool _flowering = false;
+    private int _floweringAge = 0;
     private int _harvestStart = 0;
     private int _harvestEnd = 0;
     private string _name = "";
@@ -38,6 +39,10 @@ public class Plant
     public void Flowering()
     {
         _flowering = true;
+        if (_floweringAge + 21 < _age)
+        {
+            _flowering = false;
+        }
     }
 
     public Plant(string name)
@@ -81,10 +86,35 @@ public class Plant
         {
             _canHarvest = false;
         }
-        if (_flowering == true)
+        if (_flowering == true || _age == _floweringAge)
         {
+            Flowering();
             Console.WriteLine($"{_name} is flowering");
         }
     }
 
+    public void Display()
+    {
+        Console.WriteLine($"Plant name: {_name}");
+        Console.WriteLine($"Age: {_age} days old");
+        if (_canHarvest)
+        {
+            Console.WriteLine($"Can be harvested in approximately {_harvestStart-_age} days");
+        }
+        
+    }
+
+    public Plant(string name, int age, bool harvest, bool flowering)
+    {
+        _name = name;
+        LoadPlant();
+        _age = age;
+        _canHarvest = harvest;
+        _flowering = flowering;
+    }
+
+    public string Save()
+    {
+        return $"Plant~{_name}~{_age}~{_canHarvest}~{_flowering}~";
+    }
 }

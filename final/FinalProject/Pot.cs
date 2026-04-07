@@ -10,7 +10,7 @@ public class Pot : Container
     {
         return _radius*_radius * Math.PI * _depth;
     }
-    public Pot(string location, float shade, float depth, float radius) : base(location, shade)
+    public Pot(string location, float shade, float depth, float radius, int number) : base(location, shade, number)
     {
         _depth = depth;
         _radius = radius;
@@ -47,11 +47,29 @@ public class Pot : Container
     }
     public override void Display()
     {
+        Console.WriteLine($"Pot {_number}");
         foreach(Device device in _devices)
         {
             device.Display();
         }
 
         _plant.Display();
+    }
+
+    public override string Save()
+    {
+        string myDevices = "";
+        foreach(Device device in _devices)
+        {
+            myDevices += device.Save();
+        }
+        return $"Pot~{_number}{_location}~{_shade}~{_depth}~{_radius}~{_occupied}~{_plant.Save()}~{myDevices}~";
+    }
+
+    public override void LoadPlant(string first, string second, string third, string fourth)
+    {
+       Plant plant = new Plant(first, int.Parse(second), bool.Parse(third), bool.Parse(fourth));
+       _plant = plant;
+        
     }
 }

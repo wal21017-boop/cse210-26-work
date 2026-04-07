@@ -18,4 +18,7 @@ public abstract class Device
         _lowThreshold = low;
         _highThreshold = high;
     }
+
+    public abstract void NextDay();
+    public abstract string Save();
 }

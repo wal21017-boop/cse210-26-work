@@ -72,6 +72,17 @@ public class PhTester : Device
         
     }
 
+    public PhTester(float low, float high, float current) : base(low, high)
+    {
+        _currentPh = current;
+    }
+
+    public override string Save()
+    {
+        return $"Device~ph~{_lowThreshold}~{_highThreshold}~{_currentPh}~";
+    }
+
+
     public override void NextDay()
     {
         AddLime();
