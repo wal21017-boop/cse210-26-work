@@ -23,14 +23,13 @@ public class Humidifier : Device
         {
             _storedWater = 0;
             Console.WriteLine($"Error! Humidifier is empty, please fill halfway (press enter to fill)");
-            for (int i = 0; i >= 50; i+=10)
+            for (int i = 0; i <= 50; i+=10)
             {
                 Console.WriteLine($"Current Water level (out of 100): {_storedWater}");
                 Console.ReadLine();
                 _storedWater+=10;
             }
         }
-        Console.WriteLine($"Error! Humidifier is full");
     }
 
     public override void CheckLevel()
@@ -53,6 +52,10 @@ public class Humidifier : Device
             _currentHumidity -=1;
             _storedWater +=1;
         }
+        else
+        {
+            Alert();
+        }
     }
 
     public void Humidify()
@@ -64,12 +67,7 @@ public class Humidifier : Device
         }
         else
         {
-            Console.WriteLine($"Would you like to refill the humidifier? (y/n)");
-            string yn = Console.ReadLine();
-            if (yn == "y")
-            {
-                _storedWater = 50;
-            }
+            Alert();
         }
     }
 

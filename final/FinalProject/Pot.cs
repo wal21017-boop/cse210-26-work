@@ -52,7 +52,6 @@ public class Pot : Container
         {
             device.Display();
         }
-
         _plant.Display();
     }
 
@@ -63,13 +62,15 @@ public class Pot : Container
         {
             myDevices += device.Save();
         }
-        return $"Pot~{_number}{_location}~{_shade}~{_depth}~{_radius}~{_occupied}~{_plant.Save()}~{myDevices}~";
+        return $"Pot~{_number}~{_location}~{_shade}~{_depth}~{_radius}~{_occupied}~{_plant.Save()}~{myDevices}~";
     }
 
     public override void LoadPlant(string first, string second, string third, string fourth)
     {
+        _occupied = true;
        Plant plant = new Plant(first, int.Parse(second), bool.Parse(third), bool.Parse(fourth));
        _plant = plant;
+
         
     }
 }

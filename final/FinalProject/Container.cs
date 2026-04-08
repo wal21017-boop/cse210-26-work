@@ -13,9 +13,42 @@ public abstract class Container
     public abstract double CalculateArea();
     public void AddDevice(string hold)
     {
-        float low = float.Parse(Console.ReadLine());
-        float high = float.Parse(Console.ReadLine());
-        string flowType = Console.ReadLine();
+        float low = 0;
+        float high = 0;
+        if (hold == "water")
+        {
+            Console.WriteLine("What is the minimum number of hours this device should be on each day?");
+            low = float.Parse(Console.ReadLine());
+            Console.WriteLine("What is the maximum number of hours this device should be on each day?");
+            high = float.Parse(Console.ReadLine());
+        }
+        else if (hold == "nutrient")
+        {
+            Console.WriteLine("What is the minimum amount of this nutrient the soil should have?");
+            low = float.Parse(Console.ReadLine());
+            Console.WriteLine("What is the maximum amount of this nutrient the soil should have?");
+            high = float.Parse(Console.ReadLine());
+        }
+        else if (hold == "ph")
+        {
+            Console.WriteLine("What is the minimum pH the soil should have?");
+            low = float.Parse(Console.ReadLine());
+            Console.WriteLine("What is the maximum pH the soil should have?");
+            high = float.Parse(Console.ReadLine());
+        }
+        else
+        {
+            low = 0;
+            high = 0;
+        }
+       
+        string flowType = "";
+        if (hold == "water")
+        {
+            Console.WriteLine("How should the hose water the plant? ");
+            Console.WriteLine("Accepted Values: drip, flood, rain, stream");
+            flowType = Console.ReadLine();
+        }
         Device device = hold switch
         {
             "ph" => new PhTester(low, high),
@@ -68,7 +101,7 @@ public abstract class Container
         else if (first == "water")
         {
             flowType = fourth;
-            moist = int.Parse(fifth);    
+            moist = int.Parse(fifth);
         }
 
         else if (first == "temp")
@@ -105,5 +138,13 @@ public abstract class Container
     }
 
     public abstract void LoadPlant(string first, string second, string third, string fourth);
+
+    public void CheckDevices()
+    {
+        foreach (Device device in _devices)
+        {
+            device.CheckLevel();
+        }
+    }
     
 }

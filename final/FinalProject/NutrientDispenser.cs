@@ -9,10 +9,11 @@ public class NutrientDispenser : Device
     
     public void AddNutrient()
     {
-        if (_nutrientStore > .1)
+        if (_nutrientStore > .2 && _currentNutrientLevel < (_lowThreshold + _highThreshold)/2)
         {
-            _nutrientStore -= .1;
-        Console.WriteLine($".1 grams of {_nutrient} added to soil");
+            _nutrientStore -= .2;
+            _currentNutrientLevel +=.2;
+        Console.WriteLine($".2 grams of {_nutrient} added to soil");
         }
         else if (_nutrientStore > 0)
         {
@@ -32,6 +33,7 @@ public class NutrientDispenser : Device
     }
     public override void CheckLevel()
     {
+        Console.WriteLine($"Current {_nutrient} level: {_currentNutrientLevel}");
         if (_lowThreshold >= _currentNutrientLevel)
         {
             AddNutrient();
@@ -52,7 +54,7 @@ public class NutrientDispenser : Device
     {
         Console.WriteLine($"Current {_nutrient} levels in soil = {_currentNutrientLevel}");
         Console.WriteLine($"Current stores of {_nutrient} in dispenser = {_nutrientStore}");
-        if (_nutrientStore < .1)
+        if (_nutrientStore < .2)
         {
             
             Console.WriteLine($"{_nutrient} levels are low. Would you like to fill the dispenser? (y/n)");
@@ -65,7 +67,18 @@ public class NutrientDispenser : Device
         }
     }
 
-    public NutrientDispenser(float low, float high) : base(low, high){}
+    public NutrientDispenser(float low, float high) : base(low, high)
+    {
+        _nutrient = "null";
+        do
+        {
+            
+    
+            Console.WriteLine("Which nutrient would you like this device to use? ");
+            Console.WriteLine("Nitrogen, Potassium, Phosphorous, or Calcium");
+            _nutrient = Console.ReadLine();
+        } while (_nutrient != "Nitrogen" && _nutrient != "Phosphorous" && _nutrient != "Potassium" && _nutrient != "Calcium");
+    }
 
     public NutrientDispenser(float low, float high, float current, float store, string nutrient) : base(low, high)
     {

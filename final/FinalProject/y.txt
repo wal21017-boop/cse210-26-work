@@ -1,0 +1,5 @@
+Greenhouse~3~10~10~10~100~
+Plot~1~no~2~10~10~False~~~
+Plot~2~no~2~10~10~True~Plant~Potato~3~True~False~~~
+Pot~2~no~2~2~2~True~Plant~Tomato~3~True~False~~Device~nutrient~3~5~0.04999999999999999~0.8~Nitrogen~Device~water~3~10~drip~0~Device~ph~5~7~4.708029~~
+Pot~2~no~5~5~5~True~Plant~Lavender~0~False~False~~~

@@ -6,6 +6,9 @@ class Program
 {
     static void Main(string[] args)
     {
+        int lights = 0;
+        int humid = 0;
+        int temp = 0;
         Console.WriteLine("Welcome to the Greenhouse Simulator!");
         Console.WriteLine("Would you like to continue a previous simulation? (y/n)");
         string yn = Console.ReadLine();
@@ -20,10 +23,10 @@ class Program
         {
             Console.WriteLine("What would you like to name this greenhouse? ");
             string name = Console.ReadLine();
+            Console.WriteLine("What length (in meters) is your greenhouse? ");
+            float length = float.Parse(Console.ReadLine());
             Console.WriteLine("What width (in meters) is your greenhouse? ");
             float width = float.Parse(Console.ReadLine());
-            Console.WriteLine("What width (in meters) is your greenhouse? ");
-            float length = float.Parse(Console.ReadLine());
             Console.WriteLine("What height (in meters) is your greenhouse? ");
             float height = float.Parse(Console.ReadLine());
             float overallArea = 0;
@@ -70,7 +73,9 @@ class Program
             Console.WriteLine("3: Check device levels");
             Console.WriteLine("4: Move to the next day");
             Console.WriteLine("5: Save Progress");
-            Console.WriteLine("6: Quit");
+            Console.WriteLine("6: Add device to greenhouse");
+            Console.WriteLine("7: Move 7 days ahead");
+            Console.WriteLine("8: Quit");
             option = int.Parse(Console.ReadLine());
 
             if (option == 1)
@@ -91,7 +96,7 @@ class Program
                     Console.WriteLine("What is the common name of the plant you want to plant?");
                     string name = Console.ReadLine();
                     greenhouse.AddContainer("pot", location, shade, depth, radius, potNums +1);
-                    greenhouse.AddPlant(greenhouse.NumContainers() - 1, name);
+                    greenhouse.AddPlant(greenhouse.NumContainers(), name);
                 }
                 else
                 {
@@ -102,7 +107,70 @@ class Program
                     greenhouse.AddPlant(num, name);
                 }
             }
+
+            else if (option == 2)
+            {
+                greenhouse.Display();
+            }
+
+            else if (option == 3)
+            {
+                greenhouse.CheckDevices();
+            }
+
+            else if (option == 4)
+            {
+                greenhouse.NextDay();
+            }
+
+            else if (option == 5)
+            {
+                greenhouse.SaveGreenhouse();
+            }
+
+            else if (option == 6)
+            {
+                Console.WriteLine("Please enter the number of the device you'd like to add");
+                Console.WriteLine("1: Automatic Lights");
+                Console.WriteLine("2: Humidifier");
+                Console.WriteLine("3: Thermostat");
+                int choice = int.Parse(Console.ReadLine());
+                if (choice == 1 && lights == 0)
+                {
+                    greenhouse.AddDevice("lights");
+                    lights = 1;
+                }
+                else if (choice == 2 && humid == 0)
+                {
+                    greenhouse.AddDevice("humid");
+                    humid = 1;
+                }
+                else if (choice == 3 && temp == 0)
+                {
+                    greenhouse.AddDevice("temp");
+                    temp = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid device");
+                    Console.WriteLine("You may only have one device of each type");
+                }
+            }
+
+            else if (option == 7)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    greenhouse.NextDay();
+                }
+            }
+
+            else if (option != 8)
+            {
+                Console.WriteLine("Please choose a valid option");
+            }
+            Console.ReadLine();
             
-        } while (option != 6);
+        } while (option != 8);
     }
 }

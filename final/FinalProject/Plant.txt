@@ -1,0 +1,13 @@
+Tomato~true~true~60~70~90~Nitrogen~10~Potassium~15~Phosphorous~10~Calcium~5~6~1~80~12~drip~1.5~
+Lettuce~true~false~0~30~45~Nitrogen~20~Potassium~10~Phosphorous~5~Calcium~2~7~1~50~14~rain~0.5~
+Rose~false~true~45~0~0~Nitrogen~15~Potassium~20~Phosphorous~20~Calcium~10~6~0~90~10~stream~2.0~
+Spinach~true~false~0~35~50~Nitrogen~25~Potassium~10~Phosphorous~5~Calcium~5~7~1~40~10~rain~0.5~
+Bell_Pepper~true~true~70~80~120~Nitrogen~15~Potassium~20~Phosphorous~15~Calcium~8~6~1~90~12~drip~1.0~
+Strawberry~true~true~90~100~150~Nitrogen~10~Potassium~25~Phosphorous~20~Calcium~12~6~1~100~14~drip~0.75~
+Cucumber~true~true~50~60~90~Nitrogen~20~Potassium~15~Phosphorous~10~Calcium~5~6~1~80~12~flood~2.0~
+Kale~true~false~0~50~70~Nitrogen~30~Potassium~10~Phosphorous~5~Calcium~15~7~2~40~8~rain~0.5~
+Basil~true~true~30~40~90~Nitrogen~15~Potassium~10~Phosphorous~10~Calcium~2~6~1~70~15~drip~0.25~
+Blueberry~true~true~730~750~800~Nitrogen~5~Potassium~15~Phosphorous~10~Calcium~5~5~1~90~12~drip~1.2~
+Carrot~true~false~0~70~80~Nitrogen~5~Potassium~20~Phosphorous~15~Calcium~5~6~1~60~10~flood~0.8~
+Lavender~false~true~365~400~450~Nitrogen~5~Potassium~10~Phosphorous~10~Calcium~10~7~1~100~12~drip~0.1~
+Potato~true~false~0~90~120~Nitrogen~15~Potassium~30~Phosphorous~20~Calcium~5~5~1~70~10~stream~1.5~

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Formats.Asn1;
+using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 
 public class Greenhouse
@@ -20,9 +21,35 @@ public class Greenhouse
 
     public void AddDevice(string hold)
     {
-        float low = float.Parse(Console.ReadLine());
-        float high = float.Parse(Console.ReadLine());
-        string flowType = Console.ReadLine();
+        float low = 0;
+        float high = 0;
+        if (hold == "humid" || hold == "temp")
+        {
+            Console.WriteLine("What is the lowest value this device should allow before automatically working?");
+            low = float.Parse(Console.ReadLine());
+            Console.WriteLine("What is the highest value this device should allow before automatically working?");
+            high = float.Parse(Console.ReadLine());
+        }
+        else if (hold == "lights")
+        {
+            Console.WriteLine("What is the minimum number of hours this device should be on each day?");
+            low = float.Parse(Console.ReadLine());
+            Console.WriteLine("What is the maximum number of hours this device should be on each day?");
+            high = float.Parse(Console.ReadLine());
+        }
+        else
+        {
+            low = 0;
+            high = 0;
+        }
+       
+        string flowType = "";
+        if (hold == "water")
+        {
+            Console.WriteLine("How should the hose water onto the plant? ");
+            Console.WriteLine("Accepted Values: drip, flood, rain, stream");
+            flowType = Console.ReadLine();
+        }
         Device device = hold switch
         {
             "ph" => new PhTester(low, high),
@@ -30,6 +57,7 @@ public class Greenhouse
             "water" => new Hose(low, high, flowType),
             "temp" => new Thermostat(low,high),
             "nutrient" => new NutrientDispenser(low, high),
+            "lights" => new Lights(low, high),
             _ => throw new Exception("Device type was not recognized")
 
 
@@ -40,8 +68,7 @@ public class Greenhouse
 
     public void AddContainer(string type, string location, float shade, float measure1, float measure2, int number)
     {
-        if (_area > 0)
-        {
+       
             Container container;
             if (type == "pot")
             {
@@ -55,21 +82,13 @@ public class Greenhouse
                 float width = measure2;
                 container = new Plot(location,shade, length, width, number);
                 float area = length*width;
-                _area -= area;
-                if (_area < 0)
-                    {
-                        Console.WriteLine($"ERROR: the {_name} greenhouse does not have enough space for this plot");
-                        return;
-                    }
+                
             }
             _containers.Add(container);
         }
-        else
-        {
-             Console.WriteLine($"ERROR: the {_name} greenhouse does not have any space left");
-        }
+        
 
-    }
+    
 
     public void LoadGreenhouse()
     {
@@ -79,7 +98,7 @@ public class Greenhouse
         int spot = 0;
         foreach (string parts in all)
         {
-            
+            spot = 0;
             string [] myparts = parts.Split("~");
             
             if (myparts[spot] == "Plot")
@@ -91,15 +110,16 @@ public class Greenhouse
                 float width = float.Parse(myparts[spot + 5]);
                 bool occupied = bool.Parse(myparts[spot + 6]);
                 Plot plot = new Plot(location, shade, length, width, number);
+                spot += 7;
 
                 if (occupied)
                     {
-                        for(int i = 6; i < 1000; i++)
+                        for(int i = 0; i < 1000; i++)
                         {
                             if (myparts[spot + i] == "Plant")
                             {
                                 string plantName = myparts[spot + i + 1];
-                                plot.AddPlant(plantName);
+                                plot.LoadPlant(plantName, myparts[spot + i +2], myparts[spot + i + 3], myparts[spot + i + 4]);
                             }
                             else if (myparts[spot + i] == "Device")
                             {
@@ -124,21 +144,24 @@ public class Greenhouse
                 float depth = float.Parse(myparts[spot + 4]);
                 float radius = float.Parse(myparts[spot + 5]);
                 bool occupied = bool.Parse(myparts[spot + 6]);
+                spot +=7;
                 Pot pot = new Pot(location, shade, depth, radius, number);
                 if (occupied)
                     {
-                        for(int i = 6; i < 100; i++)
+                        for(int i = 0; i + spot < myparts.Length; i++)
                         {
                             
                             if (myparts[spot + i] == "Plant")
                                 {
                                     pot.LoadPlant(myparts[spot + i + 1], myparts[spot + i + 2], myparts[spot+i+3], myparts[spot+i+4]);
                                     
+                                    
                                 }
                                 else if (myparts[spot + i] == "Device")
                                 {
                                     
                                     pot.LoadDevice(myparts[spot + i + 1], myparts[spot + i + 2], myparts[spot+i+3], myparts[spot+i+4], myparts[spot+i+5], myparts[spot+i+6]);
+                                    
                                     
                                 }
                         }
@@ -153,6 +176,7 @@ public class Greenhouse
                 _width = float.Parse(myparts[spot + 3]);
                 _length= float.Parse(myparts[spot + 4]);
                 _area = float.Parse(myparts[spot + 5]);
+                spot +=6;
                 
             }
             else
@@ -177,6 +201,7 @@ public class Greenhouse
         
             }
         }
+        Console.WriteLine($"{_name} greenhouse saved!");
     }
 
     public Greenhouse(string name, float length, float width, float height)
@@ -215,6 +240,7 @@ public class Greenhouse
     public void NextDay()
     {
         _days+=1;
+        Console.WriteLine($"Day {_days}");
         foreach (Container container in _containers)
         {
             container.NextDay();
@@ -228,11 +254,62 @@ public class Greenhouse
 
     public void AddPlant(int containerNum, string plantName)
     {
-        _containers[containerNum+1].AddPlant(plantName);
+        _containers[containerNum-1].AddPlant(plantName);
+        Console.WriteLine($"{plantName} plant added");
+        Console.WriteLine("Would you like to add any devices to automatically monitor the plant? (y/n) ");
+        string yn = Console.ReadLine();
+        if (yn == "y")
+        {
+            int nutrient = 0;
+            int hose = 0;
+            int ph = 0;
+            do 
+            {
+                Console.WriteLine("Choose a device");
+                Console.WriteLine("1: Nutrient Dispenser");
+                Console.WriteLine("2: Automatic Hose");
+                Console.WriteLine("3: pH Tester");
+                int device = int.Parse(Console.ReadLine());
+                if (device == 1 && nutrient == 0)
+                {
+                    _containers[containerNum-1].AddDevice("nutrient");
+                    nutrient = 1;
+                }
+                else if (device == 2 && hose == 0)
+                {
+                    _containers[containerNum-1].AddDevice("water");
+                    hose = 1;
+                }
+                else if (device == 3 && ph == 0)
+                {
+                    _containers[containerNum-1].AddDevice("ph");
+                    ph = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid number");
+                    Console.WriteLine("You may only have one device of each type");
+                }
+                Console.WriteLine("Would you like to add another device? (y/n)");
+                yn = Console.ReadLine();
+            } while (yn == "y");
+        }
     }
 
     public int NumContainers()
     {
         return _containers.Count;
+    }
+
+    public void CheckDevices()
+    {
+        foreach (Device device in _devices)
+        {
+            device.CheckLevel();
+        }
+        foreach (Container container in _containers)
+        {
+            container.CheckDevices();
+        }
     }
 }

@@ -10,7 +10,7 @@ public class Plot : Container
     }
     public override void AddPlant(string name)
     {
-        
+        _occupied = true;
         Plant plant = new Plant(name);
         _plants.Add(plant);
     }
@@ -62,6 +62,7 @@ public class Plot : Container
 
     public override void LoadPlant(string first, string second, string third, string fourth)
     {
+        _occupied = true;
        Plant plant = new Plant(first, int.Parse(second), bool.Parse(third), bool.Parse(fourth));
        _plants.Add(plant);
     }

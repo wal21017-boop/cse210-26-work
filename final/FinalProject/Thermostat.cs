@@ -4,24 +4,24 @@ public class Thermostat : Device
 
     public override void CheckLevel()
     {
-        do
-        {
-            
+        Console.WriteLine($"Current temperature: {_currentTemp}");  
         if (_currentTemp > _highThreshold)
         {
             Cool();
+            Console.WriteLine("Cooling...");
         }
 
         else if (_currentTemp < _lowThreshold)
         {
             Heat();
+            Console.WriteLine("Heating...");
         }
-        } while (_currentTemp > _highThreshold || _currentTemp < _lowThreshold);
     }
+    
 
     public override void Alert()
     {
-        
+        Console.WriteLine("ERROR: Thermostat is broken");
     }
 
     public override void Display()

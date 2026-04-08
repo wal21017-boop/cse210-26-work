@@ -1,0 +1,3 @@
+Greenhouse~11~1~1~1~0~
+Plot~1~1~1~1~1~True~Plant~Tomato~10~True~False~~~
+Pot~2~1~1~1~1~True~Plant~Kale~8~True~False~~Device~nutrient~1~5.5~-0.40000000149011605~0.20000001192092906~Nitrogen~~

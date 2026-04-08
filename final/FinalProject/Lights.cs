@@ -1,3 +1,5 @@
+using System.Formats.Asn1;
+
 public class Lights : Device
 {
     private Dictionary<int, bool> _lightSchedule = new Dictionary<int, bool>();
@@ -9,23 +11,23 @@ public class Lights : Device
 
     public override void CheckLevel()
     {
-        Console.WriteLine($"Would you like to adjust the light schedule? (y/n) ");
-        string yn = Console.ReadLine();
-        if (yn == "y")
-        {
-            ScheduleLights();
-        }
-        else
-        {
-            Display();
-        }
+        
+        Display();
+    
     }
 
     public override void Display()
     {
-        for(int i=0; i == 24; i++)
+        for(int i=0; i <= 24; i++)
             {
-                if (_lightSchedule[i])
+                if (i > 0)
+                {
+                    if (_lightSchedule[i] != _lightSchedule[i - 1])
+                    {
+                        Console.WriteLine($"{i}:00, lights off");
+                    }
+                }
+                else if (_lightSchedule[i])
                 {
                     Console.WriteLine($"{i}:00, lights on");
                 }
@@ -45,7 +47,7 @@ public class Lights : Device
     {
         Console.WriteLine("How many hours do you want the lights on each day? ");
         int numHours = int.Parse(Console.ReadLine());
-        for(int i = 0; i == 24; i++)
+        for(int i = 0; i <= 24; i++)
         {           
             if (i <= numHours)
             {
@@ -62,7 +64,7 @@ public class Lights : Device
 
     public Lights(float low, float high) : base(low, high)
     {
-        
+        ScheduleLights();
     }
     public override string Save()
     {

@@ -20,18 +20,11 @@ public class PhTester : Device
         Console.WriteLine($"pH = {_currentPh}");
         Console.WriteLine($"Lime stores = {_phStores["lime"]}");
         Console.WriteLine($"Sulfur stores = {_phStores["sulfur"]}");
-        Console.WriteLine($"Would you like to refill the PhTester? (y/n)");
-            string yn = Console.ReadLine();
-            if (yn == "y")
-            {
-                _phStores["lime"] = 10;
-                _phStores["sulfur"] = 10;
-            }
     }
 
     public void AddLime()
     {
-        if (_phStores["lime"] > 0 && _currentPh > _highThreshold)
+        if (_phStores["lime"] > 0 && _currentPh < _lowThreshold)
         {
             _currentPh +=1;
             _phStores["lime"] -= 1;
@@ -50,12 +43,12 @@ public class PhTester : Device
 
     public void AddSulfur()
     {
-        if (_phStores["sulfur"] > 0 && _currentPh < _lowThreshold)
+        if (_phStores["sulfur"] > 0 && _currentPh > _highThreshold)
         {
             _currentPh -=1;
             _phStores["sulfur"] -= 1;
         }
-        else if (_phStores["Sulfur"] <= 1)
+        else if (_phStores["sulfur"] <= 1)
         {
             Console.WriteLine("There is not enough sulfur in this PhTester");
             Console.WriteLine($"Would you like to refill the sulfur? (y/n)");

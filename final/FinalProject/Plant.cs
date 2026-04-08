@@ -58,7 +58,49 @@ public class Plant
 
     public void LoadPlant()
     {
+        {
+        string filename = $"Plant.txt";
+        string[] all = System.IO.File.ReadAllLines(filename);
+        int spot = 0;
+        string [] myparts;
         
+        foreach (string parts in all)
+        {
+            
+            myparts = parts.Split("~");
+                
+                    
+            if (myparts[spot] == _name)
+                {
+                    _canHarvest = bool.Parse(myparts[spot + 1]);
+                    _flowering = false;
+                    _floweringAge = int.Parse(myparts[spot + 3]);
+                    _harvestStart = int.Parse(myparts[spot + 4]);
+                    _harvestEnd = int.Parse(myparts[spot + 5]);
+                    _nutrients[myparts[spot + 6]] = int.Parse(myparts[spot + 7]);
+                    _nutrients[myparts[spot + 8]] = int.Parse(myparts[spot + 9]);
+                    _nutrients[myparts[spot + 10]] = int.Parse(myparts[spot + 11]);
+                    _nutrients[myparts[spot + 12]] = int.Parse(myparts[spot + 13]);
+                    _idealPh = int.Parse(myparts[spot + 14]);
+                    _phRange = int.Parse(myparts[spot + 15]);
+                    _lightIntensity = int.Parse(myparts[spot + 16]);
+                    _lightHrs = int.Parse(myparts[spot + 17]);
+                    _waterNeeds[myparts[spot + 18]] = float.Parse(myparts[spot + 19]);
+                    
+                    break;
+                    
+                }
+                else
+                    {
+                        
+                    }
+        }
+                
+
+
+        }
+        
+
     }
 
     public void DisplayNeeds()
@@ -81,6 +123,16 @@ public class Plant
         if (_harvestStart == _age)
         {
             _canHarvest = true;
+            Console.WriteLine($"The {_name} can be harvested!");
+            Console.WriteLine($"Would you like to harvest the {_name}? (y/n)");
+            string yn= Console.ReadLine();
+            if (yn == "y")
+            {
+                _canHarvest = false;
+                Console.WriteLine($"The {_name} has been harvested");
+                Console.WriteLine("Awesome!");
+                Thread.Sleep(500);
+            }
         }
         if (_harvestEnd == _age)
         {

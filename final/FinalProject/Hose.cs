@@ -1,8 +1,9 @@
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 
 public class Hose : Device
 {
-    private int _currentMoistness = 0;
+    private double _currentMoistness = 0;
     private string _flowType= "stream";
     private Dictionary<int, double> _waterSchedule = new Dictionary<int, double>();
 
@@ -13,7 +14,7 @@ public class Hose : Device
 
     public override void CheckLevel()
     {
-        if (_currentMoistness>_highThreshold || _currentMoistness < _lowThreshold)
+        if (_currentMoistness < _lowThreshold)
         {
             Alert();
         }
@@ -30,30 +31,37 @@ public class Hose : Device
 
     public void ScheduleWater()
     {
-        Console.WriteLine("What type of watering do you want the hose to do? (drip, stream, flood, or rain) ");
-        _flowType = Console.ReadLine();
         Console.WriteLine("How many hours of watering do you want each day? ");
         int numHours = int.Parse(Console.ReadLine());
-        for(int i = 0; i == 24 ; i++)
+        if (numHours > _highThreshold || numHours < _lowThreshold)
         {
-            if (_flowType == "drip")
-            {
-                _waterSchedule[i] = 0.1;
-            }
+            Console.WriteLine($"Please enter a number less than {_highThreshold} and greater than {_lowThreshold}");
+            numHours = int.Parse(Console.ReadLine());
+        }
 
-            else if (_flowType == "stream")
+        for(int i = 0; i <= 24 ; i++)
+        {
+            if (i < numHours)
             {
-                _waterSchedule[i] = 2.0;
-            }
+                if (_flowType == "drip")
+                {
+                    _waterSchedule[i] = 0.1;
+                }
 
-            else if (_flowType == "flood")
-            {
-                _waterSchedule[i] = 3.5;
-            }
+                else if (_flowType == "stream")
+                {
+                    _waterSchedule[i] = 2.0;
+                }
 
-            else if (_flowType == "rain")
-            {
-                _waterSchedule[i] = 1.5;
+                else if (_flowType == "flood")
+                {
+                    _waterSchedule[i] = 3.5;
+                }
+
+                else if (_flowType == "rain")
+                {
+                    _waterSchedule[i] = 1.5;
+                }
             }
             else
             {
@@ -65,33 +73,34 @@ public class Hose : Device
 
     public void Water(int hour)
     {
-        if (_waterSchedule[hour] == 0)
+        if (_waterSchedule[hour] > 0)
         {
             
-        }
-        else
-        {
             Console.WriteLine($"Plant given {_waterSchedule[hour]} units of water at {hour}:00");
+            _currentMoistness += _waterSchedule[hour];
         }
     }
 
     public Hose(float low, float high, string flowType) : base(low, high)
     {
         _flowType = flowType;
+        ScheduleWater();
     }
 
     public override void NextDay()
     {
-        for(int i = 0; i ==24; i++)
+        for(int i = 0; i <=24; i++)
         {
             Water(i);
         }
+        _currentMoistness -= 1;
     }
 
     public Hose(float low, float high, string flowType, int current) : base(low, high)
     {
         _flowType = flowType;
         _currentMoistness = current;
+        ScheduleWater();
     }
     public override string Save()
     {
